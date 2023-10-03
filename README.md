@@ -22,3 +22,21 @@
 - NetflixGPT
     - Search Bar
     - Movie Suggestions
+
+
+
+
+# deploy to firebase 
+- npm install -g firebase-tools >>done
+- firebase login
+- firebase init
+- firebase.json
+    - {
+        "hosting": {
+            "site": "gptflix",
+
+            "public": "public",
+            ...
+        }
+    }
+-firebase deploy --only hosting:gptflix
