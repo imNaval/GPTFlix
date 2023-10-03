@@ -5,6 +5,7 @@ import { auth } from '../utils/firebase'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
+import { GPTFLIX_LOGO, USER_LOGO } from '../utils/constant'
 
 const Header = () => {
 
@@ -16,7 +17,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-      onAuthStateChanged(auth, (user) => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
           if (user) {
               const { uid, email, displayName } = user
               dispatch(addUser({
@@ -24,20 +25,20 @@ const Header = () => {
                   email: email,
                   displayName: displayName
               }))
-
               navigate("/browse")
           } else {
               // User is signed out
               dispatch(removeUser())
-
               navigate("/")
           }
       });
+
+      return ()=> unsubscribe()
   }, []);
 
   const handleSignOut = () =>{
     signOut(auth).then(() => {
-      
+      //success
     }).catch((error) => {
       // An error happened.
       console.log(error)
@@ -48,7 +49,7 @@ const Header = () => {
     <div className='absolute px-8 py-3 bg-gradient-to-b from-black z-50 w-full flex justify-between'>
         <img
             className='w-48'
-            src='https://assets.stickpng.com/images/580b57fcd9996e24bc43c529.png'
+            src={GPTFLIX_LOGO}
             alt='netflixLogo'
         />
 
@@ -56,8 +57,8 @@ const Header = () => {
         <div className='items-center'>
           <img
             className='w-8 h-8'
-            src='https://wallpapers.com/images/hd/netflix-profile-pictures-1000-x-1000-qo9h82134t9nv0j0.jpg'
-            alt='netflixLogo'
+            src={USER_LOGO}
+            alt='userLogo'
             onClick={handleSignOut}
           />
           </div>
