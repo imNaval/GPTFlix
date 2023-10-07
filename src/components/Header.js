@@ -5,38 +5,41 @@ import { auth } from '../utils/firebase'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
-import { GPTFLIX_LOGO, USER_LOGO } from '../utils/constant'
+import { GPTFLIX_LOGO, SUPPORTED_LANGUAGE, USER_LOGO } from '../utils/constant'
+import { toggleGptSearchView } from '../utils/gptSlice'
+import { changeLanguage } from '../utils/configSlice'
 
 const Header = () => {
 
-  const user = useSelector(store=> store.user);
+  const user = useSelector(store => store.user);
   const navigate = useNavigate()
-
-
-
   const dispatch = useDispatch();
 
-  useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-          if (user) {
-              const { uid, email, displayName } = user
-              dispatch(addUser({
-                  uid: uid,
-                  email: email,
-                  displayName: displayName
-              }))
-              navigate("/browse")
-          } else {
-              // User is signed out
-              dispatch(removeUser())
-              navigate("/")
-          }
-      });
+  const showGptSearch = useSelector(store => store.gpt.showGptSearch)
+  const langKey = useSelector(store => store.config.lang)
+  //console.log(SUPPORTED_LANGUAGE.filter(lang => lang.identifier === langKey)[0].name)
 
-      return ()=> unsubscribe()
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const { uid, email, displayName } = user
+        dispatch(addUser({
+          uid: uid,
+          email: email,
+          displayName: displayName
+        }))
+        navigate("/browse")
+      } else {
+        // User is signed out
+        dispatch(removeUser())
+        navigate("/")
+      }
+    });
+
+    return () => unsubscribe()
   }, []);
 
-  const handleSignOut = () =>{
+  const handleSignOut = () => {
     signOut(auth).then(() => {
       //success
     }).catch((error) => {
@@ -45,24 +48,45 @@ const Header = () => {
     });
   }
 
+  const handleGptToggle = () => {
+    dispatch(toggleGptSearchView())
+  }
+
+  const handleLanguageChange = (e) => {
+    dispatch(changeLanguage(e.target.value))
+  }
+
   return (
     <div className='absolute px-8 py-3 bg-gradient-to-b from-black z-50 w-full flex justify-between'>
-        <img
-            className='w-48'
-            src={GPTFLIX_LOGO}
-            alt='netflixLogo'
-        />
+      <img
+        className='w-48'
+        src={GPTFLIX_LOGO}
+        alt='netflixLogo'
+      />
 
-        {user &&
-        <div className='items-center'>
+      {user &&
+        <div className='flex p-2 items-center'>
+          {showGptSearch &&
+          //value={SUPPORTED_LANGUAGE.filter(lang => lang.identifier === langKey)[0].name} 
+            <select className='p-2 m-2 bg-gray-900 text-white'  onChange={(e) => handleLanguageChange(e)}>{
+              SUPPORTED_LANGUAGE.map(lang => (
+                <option key={lang.identifier} value={lang.identifier} selected={lang.identifier === langKey}>
+                  {lang.name}
+                </option>
+              ))
+            }
+            </select>
+          }
+
+          <button className='border border-white rounded-lg bg-purple-400 text-white front-2xl px-4 py-2 mx-2' onClick={handleGptToggle}>GPT Search</button>
           <img
             className='w-8 h-8'
             src={USER_LOGO}
             alt='userLogo'
             onClick={handleSignOut}
           />
-          </div>
-        }
+        </div>
+      }
     </div>
   )
 }
