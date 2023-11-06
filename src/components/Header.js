@@ -68,7 +68,8 @@ const Header = () => {
         <div className='flex p-2 items-center'>
           {showGptSearch &&
           //value={SUPPORTED_LANGUAGE.filter(lang => lang.identifier === langKey)[0].name} 
-            <select className='p-2 m-2 bg-gray-900 text-white'  onChange={(e) => handleLanguageChange(e)}>{
+          // defaultValue={SUPPORTED_LANGUAGE.filter(lang => lang.identifier === langKey)[0].name}
+            <select className='p-2 m-2 bg-gray-900 text-white' onChange={(e) => handleLanguageChange(e)}>{
               SUPPORTED_LANGUAGE.map(lang => (
                 <option key={lang.identifier} value={lang.identifier} selected={lang.identifier === langKey}>
                   {lang.name}
@@ -78,7 +79,7 @@ const Header = () => {
             </select>
           }
 
-          <button className='border border-white rounded-lg bg-purple-400 text-white front-2xl px-4 py-2 mx-2' onClick={handleGptToggle}>GPT Search</button>
+          <button className='border border-white rounded-lg bg-purple-400 text-white front-2xl px-4 py-2 mx-2' onClick={handleGptToggle}>{showGptSearch ? "Home Page" : "GPT Search"}</button>
           <img
             className='w-8 h-8'
             src={USER_LOGO}

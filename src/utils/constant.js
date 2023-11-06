@@ -20,3 +20,5 @@ export const TMDB_API_OPTIONS = {
     {identifier: 'hi', name: "Hindi"},
     {identifier: 'es', name: "Spanish"}
   ]
+
+  export const OPENAI_KEY = "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"
