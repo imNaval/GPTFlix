@@ -19,7 +19,6 @@ const GptMovieSuggestions = () => {
             />
           ))
         }
-        
       </div>
     </div>
   )
