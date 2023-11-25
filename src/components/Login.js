@@ -70,11 +70,12 @@ const Login = () => {
             <Header />
             <div className='absolute'>
                 <img
+                className='h-screen object-cover lg:h-auto'
                     src={BG_IMG}
                     alt='backgroundImage'
                 />
             </div>
-            <form className='absolute p-12 my-40 mx-auto right-0 left-0 w-1/3 bg-black text-white rounded-lg bg-opacity-70'
+            <form className='absolute p-12 my-40 mx-auto right-0 left-0 w-full md:w-1/3 bg-black text-white rounded-lg bg-opacity-70'
                 onSubmit={(e)=>{
                     e.preventDefault()
                     handleSubmitForm();

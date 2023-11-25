@@ -65,7 +65,7 @@ const Header = () => {
       />
 
       {user &&
-        <div className='flex p-2 items-center'>
+        <div className='flex p-2 justify-between items-center'>
           {showGptSearch &&
           //value={SUPPORTED_LANGUAGE.filter(lang => lang.identifier === langKey)[0].name} 
           // defaultValue={SUPPORTED_LANGUAGE.filter(lang => lang.identifier === langKey)[0].name}
