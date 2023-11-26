@@ -7,7 +7,7 @@ const GptPage = () => {
     return (
         <>
             <div className='fixed -z-10'>
-                <img className='h-screen object-cover lg:h-auto' src={BG_IMG} alt='backgroundImage'/>
+                <img className='h-screen object-cover md:w-screen lg:h-auto' src={BG_IMG} alt='backgroundImage'/>
             </div>
             <div className=''>
                 <GptSearchBar />

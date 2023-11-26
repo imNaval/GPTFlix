@@ -68,14 +68,15 @@ const Login = () => {
     return (
         <div>
             <Header />
-            <div className='absolute'>
+            {/* <div className='absolute'> */}
+            <div className='fixed'>
                 <img
-                className='h-screen object-cover lg:h-auto'
+                className='h-screen object-cover md:w-screen lg:h-auto'
                     src={BG_IMG}
                     alt='backgroundImage'
                 />
             </div>
-            <form className='absolute p-12 my-40 mx-auto right-0 left-0 w-full md:w-1/3 bg-black text-white rounded-lg bg-opacity-70'
+            <form className='absolute p-12 my-40 mx-auto right-0 left-0 w-[90%] sm:w-2/3 lg:w-1/3 bg-black text-white rounded-lg bg-opacity-70'
                 onSubmit={(e)=>{
                     e.preventDefault()
                     handleSubmitForm();
