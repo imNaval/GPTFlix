@@ -14,6 +14,7 @@ export const TMDB_API_OPTIONS = {
   };
 
   export const IMG_CDN_URL = "https://image.tmdb.org/t/p/w500"
+  export const IMG_CDN_URL_ORIGINAL = "https://image.tmdb.org/t/p/original/"
 
   export const  SUPPORTED_LANGUAGE = [
     {identifier: 'en', name: "English"},

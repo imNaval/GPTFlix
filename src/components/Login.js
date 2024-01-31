@@ -5,7 +5,8 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfi
 import {auth} from '../utils/firebase'
 import { useDispatch } from 'react-redux'
 import { addUser } from '../utils/userSlice'
-import { BG_IMG } from '../utils/constant'
+// import { BG_IMG } from '../utils/constant'
+import BackGround from "../utils/images/BackGround.jpg"
 
 const Login = () => {
     const [isSignInForm, setIsSignInForm] = useState(true)
@@ -72,7 +73,7 @@ const Login = () => {
             <div className='fixed'>
                 <img
                 className='h-screen object-cover md:w-screen lg:h-auto'
-                    src={BG_IMG}
+                    src={BackGround}
                     alt='backgroundImage'
                 />
             </div>

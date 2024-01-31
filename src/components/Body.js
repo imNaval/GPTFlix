@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import Login from './Login'
 import Browse from './Browse'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import PlayVideo from './PlayVideo'
+import MovieDetail from './MovieDetail'
 
 const Body = () => {
 
@@ -13,6 +15,14 @@ const Body = () => {
         {
             path: "/browse",
             element: <Browse />
+        },
+        {
+            path: "/detail/:id",
+            element: <MovieDetail />
+        },
+        {
+            path: "/watch/:id",
+            element: <PlayVideo />
         }
     ]);
 

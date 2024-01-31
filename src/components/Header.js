@@ -8,6 +8,7 @@ import { addUser, removeUser } from '../utils/userSlice';
 import { GPTFLIX_LOGO, SUPPORTED_LANGUAGE, USER_LOGO } from '../utils/constant'
 import { toggleGptSearchView } from '../utils/gptSlice'
 import { changeLanguage } from '../utils/configSlice'
+import GPTFLIX from "../utils/images/GPTFLIX.png"
 
 const Header = () => {
 
@@ -57,15 +58,17 @@ const Header = () => {
   }
 
   return (
-    <div className='absolute px-8 py-3 bg-gradient-to-b from-black z-50 w-full flex justify-between flex-col md:flex-row'>
+    <div className='absolute px-8 py-3 bg-gradient-to-b from-black z-50 w-full flex justify-between flex-col md:flex-row -top-16 md:-top-10'>
       <img
         className='w-48 mx-auto md:mx-0'
-        src={GPTFLIX_LOGO}
+        // src={GPTFLIX_LOGO}
+        src={GPTFLIX}
         alt='netflixLogo'
       />
 
       {user &&
-        <div className='flex p-2 justify-between items-center'>
+        <div className='flex p-2 justify-between items-center -mt-12 md:mt-0'>
+          <button className='border border-white rounded-lg bg-purple-400 text-white front-2xl px-4 py-2 mx-2' onClick={handleGptToggle}>{showGptSearch ? "Home Page" : "GPT Search"}</button>
           {showGptSearch &&
           //value={SUPPORTED_LANGUAGE.filter(lang => lang.identifier === langKey)[0].name} 
           // defaultValue={SUPPORTED_LANGUAGE.filter(lang => lang.identifier === langKey)[0].name}
@@ -78,8 +81,6 @@ const Header = () => {
             }
             </select>
           }
-
-          <button className='border border-white rounded-lg bg-purple-400 text-white front-2xl px-4 py-2 mx-2' onClick={handleGptToggle}>{showGptSearch ? "Home Page" : "GPT Search"}</button>
           <img
             className='w-8 h-8'
             src={USER_LOGO}
