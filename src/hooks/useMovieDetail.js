@@ -16,7 +16,7 @@ const useMovieDetail = ({movieId}) => {
 
     useEffect(()=>{
       getMovieDetails()
-    }, [])
+    }, [movieId])
 }
 
 export default useMovieDetail

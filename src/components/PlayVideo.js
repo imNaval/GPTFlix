@@ -1,29 +1,41 @@
 import React, {useEffect, useState} from 'react'
 import { useSelector } from 'react-redux'
 import useMovieVideos from '../hooks/useMovieVideos'
-import { useParams } from 'react-router-dom'
-import YouTube from 'react-youtube';
-import ReactPlayer from 'react-player';
-import video1 from "../utils/videos/video1.mp4"
+import { useNavigate, useParams } from 'react-router-dom'
+import GPTFLIX from "../utils/images/GPTFLIX.png"
+// import YouTube from 'react-youtube';
+// import ReactPlayer from 'react-player';
+// import video1 from "../utils/videos/video1.mp4"
 
 
 const PlayVideo = () => {
     const movieVideos = useSelector(store => store.movies?.movieVideos)
     const params = useParams()
+    const navigate = useNavigate();
     const movieId = params.id
-    console.log(movieId)
+    const [videoId, setVideoId] = useState(null)
     useMovieVideos({movieId})
 
+    useEffect(()=>{
+      window.scroll(0,0,)
+      movieVideos && !videoId && setVideoId(movieVideos[0]?.id)
+    }, [movieVideos, videoId])
+
+    console.log(movieVideos)
   return (
-    <div>
+    <div className='bg-black text-white'>
+      <div className='absolute px-8 py-3 bg-gradient-to-b from-black z-50 w-full flex justify-between flex-col md:flex-row -top-16 md:-top-10'>
+        <img className='w-48 mx-auto md:mx-0' src={GPTFLIX} alt='netflixLogo' onClick={() => navigate("/")} />
+      </div>
     { movieVideos &&
+    <div>
         <div className='overflow-x-hidden'>
             <iframe
             // className='w-screen aspect-video'
             className='w-full'
             width="1000"
             height="600"
-            src={`https://www.youtube.com/embed/${movieVideos[0]?.key}?si=05RGkzBUTwjLrmWU&autoplay=1&mute=0&loop=1&controls=1&rel=0&showinfo=0&modestbranding=1`}
+            src={`https://www.youtube.com/embed/${videoId}?si=05RGkzBUTwjLrmWU&autoplay=1&mute=0&loop=1&controls=1&rel=0&showinfo=0&modestbranding=1`}
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
@@ -33,6 +45,19 @@ const PlayVideo = () => {
             src={`https://www.youtube.com/embed/${movieVideos[0]?.key}?si=05RGkzBUTwjLrmWU&autoplay=1&mute=1&loop=1&controls=0&rel=0&showinfo=0&modestbranding=1`}
             ></video> */}
         </div>
+
+        <div className='mt-12'>
+          <h2 className='text-5xl font-bold ml-12'>More Videos</h2>
+          <div className='flex flex-wrap justify-center bg-black bg-opacity-10'>
+          {
+            movieVideos?.map(video => <div className='w-72 m-2' key={video?.id} onClick={()=> setVideoId(video?.id)}>
+              <img className='w-full' alt="" src={video?.snippet?.thumbnails?.standard?.url} />
+              <h2 className='font-bold text-sm -mt-6'>{video?.snippet?.title}</h2>
+            </div>)
+          }
+          </div>
+        </div>
+      </div>
     }
     </div>
   )
