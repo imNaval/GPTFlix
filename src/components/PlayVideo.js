@@ -28,17 +28,17 @@ const PlayVideo = () => {
         <img className='w-48 mx-auto md:mx-0' src={GPTFLIX} alt='netflixLogo' onClick={() => navigate("/")} />
       </div>
     { movieVideos &&
-    <div>
+    <div className='lg:pt-4'>
         <div className='overflow-x-hidden'>
             <iframe
             // className='w-screen aspect-video'
-            className='w-full'
-            width="1000"
-            height="600"
-            src={`https://www.youtube.com/embed/${videoId}?si=05RGkzBUTwjLrmWU&autoplay=1&mute=0&loop=1&controls=1&rel=0&showinfo=0&modestbranding=1`}
+            className='w-full -mt-16'
+            width="1200"
+            height="800"
+            src={`https://www.youtube.com/embed/${videoId}?si=05RGkzBUTwjLrmWU&autoplay=1&mute=0&loop=1&controls=1&rel=0&showinfo=0&modestbranding=0`}
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
+            // allowFullScreen
             ></iframe>
 
             {/* <video controls width="70%" className="videoPlayer"
