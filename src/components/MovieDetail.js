@@ -41,7 +41,7 @@ const MovieDetail = () => {
                     <img className='w-full  object-cover' src={IMG_CDN_URL_ORIGINAL + MovieDetail?.poster_path} alt='' />
                 </div>
 
-                <div className='pt-16 sm:pt-24 lg:pt-40 pl-8 pr-8 sm:pr-24 md:pr-72 lg:pr-96 text-white flex-1 mr-auto'>
+                <div className='pt-24 sm:pt-28 lg:pt-40 pl-8 pr-8 sm:pr-24 md:pr-72 lg:pr-96 text-white flex-1 mr-auto'>
                     <h1 className='font-black text-2xl sm:text-4xl md:text-6xl'>{MovieDetail?.original_title}</h1>
                     <p className='text-center'>{MovieDetail?.tagline}</p>
                     <hr className='w-72 md:w-96' />
