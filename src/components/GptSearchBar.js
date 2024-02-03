@@ -1,15 +1,15 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import lang from '../utils/languageConstants'
 import { useDispatch, useSelector } from 'react-redux'
-import openai from '../utils/openai'
+import openai, { fetchGptResponse } from '../utils/openai'
 import { TMDB_API_OPTIONS } from '../utils/constant'
 import { addGptMovieResults } from '../utils/gptSlice'
 
 const GptSearchBar = () => {
-
+  const [searching, setSearching] = useState(false)
   const dispatch = useDispatch();
-
   const searchText = useRef(null)
+  const langKey = useSelector(store => store.config.lang)
 
   const TmdbMovieSearch = async(movie) =>{
     const data = await fetch('https://api.themoviedb.org/3/search/movie?query=' + movie + '&include_adult=false&language=en-US&page=1', TMDB_API_OPTIONS)
@@ -20,40 +20,32 @@ const GptSearchBar = () => {
   }
 
   const handleGptSearch = async() =>{
-    // console.log(searchText.current.value)
+    if(searchText.current.value === '' || searching) return;
+    setSearching(true)
 
     const searchQuery = "Act as a Movie Recommendation system and suggest some movies for the query " 
       + searchText.current.value 
       + ". Only give me names of 5 movies, comma separated like the example result given ahead. Example Results: Gadar, Golmal, Hera ferri, Bahubali, KGF"
 
-/*
     const gptResult = await openai.chat.completions.create({
-      //messages: [{ role: 'user', content: searchText.current.value }],
       messages: [{ role: 'user', content: searchQuery }],
       model: 'gpt-3.5-turbo',
     });
     if(!gptResult.choices){
       //TODO: Error Handling
+      console.error("unable to load data")
     }
-    console.log(gptResult.choices[0]?.message?.content);
-*/
 
-    //for now show search for these movies, Chalti Ka Naam Gaadi, Padosan, Amar Akbar Anthony, Chupke Chupke, Angoor.
-    //const gptMoviesLists = gptResult.choices[0]?.message?.content.split(",")
-    const gptMoviesList = "Chalti Ka Naam Gaadi, Padosan, Amar Akbar Anthony, Chupke Chupke, Angoor".split(",")
-    console.log(gptMoviesList)
+    const gptMoviesList = gptResult.choices[0]?.message?.content.split(",") //if gpt not work set some default value
     //for each movie find on tmdb
     const promises = gptMoviesList.map(movie => TmdbMovieSearch(movie))
 
     const data =  await Promise.all(promises)
-    //console.log(data)
-
-    //dispatch(addGptMovieResults(data))
+    setSearching(false)
     dispatch(addGptMovieResults({movieNames: gptMoviesList, movieResults: data}))
-
   }
 
-  const langKey = useSelector(store => store.config.lang)
+
 
   return (
     <div className='pt-[50%] sm:pt-[40] md:pt-[20%] lg:pt-[10%] flex justify-center'>
@@ -64,8 +56,9 @@ const GptSearchBar = () => {
                 placeholder={lang[langKey].gptSearchPlaceHolder}
                 ref={searchText}
             />
-            <button className='col-span-3 m-4 py-1 px-2 sm:py-2 sm:px-4 bg-red-700 text-white rounded-lg'
+            <button className='col-span-3 m-4 py-1 px-2 sm:py-2 sm:px-4 bg-red-700 text-white rounded-lg cursor-pointer'
               onClick={handleGptSearch}
+              disabled={searching}
             >{lang[langKey].search}</button>
         </form>
     </div>

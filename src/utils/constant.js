@@ -22,6 +22,6 @@ export const TMDB_API_OPTIONS = {
     {identifier: 'es', name: "Spanish"}
   ]
 
-  export const OPENAI_KEY = "" //process.env.REACT_APP_OPENAI_KEY
+  export const OPENAI_KEY = process.env.REACT_APP_OPENAI_KEY
 
   export const YT_API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY

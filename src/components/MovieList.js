@@ -13,7 +13,7 @@ const MovieList = ({ title, movies }) => {
                         movies?.map(movie => <MovieCard key={movie.id} posterPath={movie.poster_path} />)
                     } */}
                     {
-                        movies?.map(movie => <Link to={`/detail/${movie.id}`} key={movie.id}> <MovieCard posterPath={movie.poster_path} /> </Link>)
+                        movies?.map(movie => <Link to={`/detail/${movie.id}`} key={movie.id} state={{genres:movie?.genre_ids}}> <MovieCard posterPath={movie.poster_path} /> </Link>)
                     }
                 </div>
             </div>
