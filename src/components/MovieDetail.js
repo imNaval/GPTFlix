@@ -65,7 +65,7 @@ const MovieDetail = () => {
                     </div>
 
                     <p className='max-h-40 overflow-hidden'>{MovieDetail?.overview}</p>
-                    <button className='py-3 px-8 mt-8 font-bold bg-red-600 shadow-2xl rounded-lg' onClick={()=> navigate("/watch/"+movieId)}>Start Watching</button>
+                    <button className='py-3 px-8 mt-8 font-bold bg-red-600 shadow-2xl rounded-lg cursor-pointer' onClick={()=> navigate("/watch/"+movieId)}>Start Watching</button>
                 </div>
             </div>
 
