@@ -22,6 +22,8 @@ const GptSearchBar = () => {
   const handleGptSearch = async() =>{
     if(searchText.current.value === '' || searching) return;
     setSearching(true)
+    console.log(searching)
+    dispatch(addGptMovieResults({movieNames: "Loading", movieResults: null}))
 
     const searchQuery = "Act as a Movie Recommendation system and suggest some movies for the query " 
       + searchText.current.value 
@@ -56,7 +58,7 @@ const GptSearchBar = () => {
                 placeholder={lang[langKey].gptSearchPlaceHolder}
                 ref={searchText}
             />
-            <button className='col-span-3 m-4 py-1 px-2 sm:py-2 sm:px-4 bg-red-700 text-white rounded-lg cursor-pointer'
+            <button className={`col-span-3 m-4 py-1 px-2 sm:py-2 sm:px-4 bg-red-700 text-white rounded-lg ${searching ?  'cursor-not-allowed' : 'cursor-pointer' }`}
               onClick={handleGptSearch}
               disabled={searching}
             >{lang[langKey].search}</button>

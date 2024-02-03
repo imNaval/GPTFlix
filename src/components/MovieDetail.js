@@ -33,7 +33,7 @@ const MovieDetail = () => {
         MovieDetail && 
         <div>
             <div className='absolute px-8 py-3 bg-gradient-to-b from-black z-50 w-full flex justify-between flex-col md:flex-row -top-20 md:-top-16'>
-                <img className='w-48 mx-auto md:mx-0' src={GPTFLIX} alt='netflixLogo' onClick={() => navigate("/")} />
+                <img className='w-48 mx-auto md:mx-0 cursor-pointer' src={GPTFLIX} alt='netflixLogo' onClick={() => navigate("/")} />
             </div>
 
             <div className='bg-black bg-opacity-70 w-full !h-screen'>
@@ -79,12 +79,12 @@ const MovieDetail = () => {
             }
 
             {
-                genresMovies&&
-                <div className='relative z-20 bg-black'>
-                    {
-                        genresMovies?.map((movies, idx) => <MovieList key={genres[idx]} title={MovieDetail?.genres[idx]?.name} movies={movies[String(genres[idx])]} />)
-                    }
-                </div>
+            genresMovies&&
+            <div className='relative z-20 bg-black'>
+                {
+                    genresMovies?.map((movies, idx) => <MovieList key={genres[idx]} title={MovieDetail?.genres[idx]?.name} movies={movies[String(genres[idx])]} />)
+                }
+            </div>
             }
 
         </div>

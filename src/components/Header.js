@@ -5,7 +5,7 @@ import { auth } from '../utils/firebase'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
-import { GPTFLIX_LOGO, SUPPORTED_LANGUAGE, USER_LOGO } from '../utils/constant'
+import { SUPPORTED_LANGUAGE, USER_LOGO } from '../utils/constant'
 import { toggleGptSearchView } from '../utils/gptSlice'
 import { changeLanguage } from '../utils/configSlice'
 import GPTFLIX from "../utils/images/GPTFLIX.png"
@@ -58,21 +58,19 @@ const Header = () => {
   }
 
   return (
-    <div className='absolute px-8 py-3 bg-gradient-to-b from-black z-50 w-full flex justify-between flex-col md:flex-row -top-16 md:-top-10'>
+    <div className='absolute px-2 sm:px-8 py-3 bg-gradient-to-b from-black z-50 w-full flex justify-between flex-col md:flex-row -top-16 md:-top-10'>
       <img
-        className='w-48 mx-auto md:mx-0'
-        // src={GPTFLIX_LOGO}
+        className='w-48 mx-auto md:mx-0 cursor-pointer'
         src={GPTFLIX}
         alt='netflixLogo'
+        onClick={() => navigate("/")}
       />
 
       {user &&
-        <div className='flex p-2 justify-between items-center -mt-12 md:mt-0'>
-          <button className='border border-white rounded-lg bg-purple-400 text-white front-2xl px-4 py-2 mx-2' onClick={handleGptToggle}>{showGptSearch ? "Home Page" : "GPT Search"}</button>
+        <div className='flex justify-between items-center sm:p-2 -mt-12 md:mt-0'>
+          <button className='border border-white rounded-lg bg-purple-400 text-white text-lg px-2 sm:px-4 py-2 sm:mx-2' onClick={handleGptToggle}>{showGptSearch ? "Home Page" : "GPT Search"}</button>
           {showGptSearch &&
-          //value={SUPPORTED_LANGUAGE.filter(lang => lang.identifier === langKey)[0].name} 
-          // defaultValue={SUPPORTED_LANGUAGE.filter(lang => lang.identifier === langKey)[0].name}
-            <select className='p-2 m-2 bg-gray-900 text-white' onChange={(e) => handleLanguageChange(e)}>{
+            <select className='p-2 m-2 bg-gray-900 text-white cursor-pointer' onChange={(e) => handleLanguageChange(e)}>{
               SUPPORTED_LANGUAGE.map(lang => (
                 <option key={lang.identifier} value={lang.identifier} selected={lang.identifier === langKey}>
                   {lang.name}
@@ -81,12 +79,16 @@ const Header = () => {
             }
             </select>
           }
-          <img
+          {/* <img
             className='w-8 h-8'
             src={USER_LOGO}
             alt='userLogo'
             onClick={handleSignOut}
-          />
+          /> */}
+          <div className='flex ml-4 gap-2'>
+            <p className='py-2 px-2 sm:px-4 sm:text-lg text-white bg-blue-500 rounded-lg border border-white cursor-none'>{user?.displayName?.length > 10 ? user?.displayName(0,10) : user?.displayName }</p>
+            <button className='py-2 px-2 sm:px-4 sm:font-bold sm:text-lg text-red-600 bg-blue-500 rounded-lg border border-red-400' onClick={handleSignOut}>Logout</button>
+          </div>
         </div>
       }
     </div>
