@@ -4,6 +4,7 @@ import Browse from './Browse'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import PlayVideo from './PlayVideo'
 import MovieDetail from './MovieDetail'
+import Error from './Error'
 
 const Body = () => {
 
@@ -23,7 +24,12 @@ const Body = () => {
         {
             path: "/watch/:id",
             element: <PlayVideo />
+        },
+        {
+            path: "*",
+            element: <Error />
         }
+        
     ]);
 
     return (

@@ -18,10 +18,16 @@ const PlayVideo = () => {
 
     useEffect(()=>{
       window.scroll(0,0,)
-      movieVideos && !videoId && setVideoId(movieVideos[0]?.id)
+      // movieVideos && !videoId && setVideoId(movieVideos[0]?.id)
     }, [movieVideos, videoId])
 
-    console.log(movieVideos)
+    useEffect(()=>{
+      window.scroll(0,0,)
+      movieVideos && setVideoId(movieVideos[0]?.id)
+    }, [movieVideos])
+
+    // console.log(movieVideos)
+    console.log(videoId)
   return (
     <div className='bg-black text-white'>
       <div className='absolute px-8 py-3 bg-gradient-to-b from-black z-50 w-full flex justify-between flex-col md:flex-row -top-16 md:-top-10'>

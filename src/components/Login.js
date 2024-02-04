@@ -11,6 +11,7 @@ import BackGround from "../utils/images/BackGround.jpg"
 const Login = () => {
     const [isSignInForm, setIsSignInForm] = useState(true)
     const [errorMessage, setErrorMessage] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     const email = useRef(null)
     const password = useRef(null)
@@ -19,10 +20,14 @@ const Login = () => {
     const dispatch = useDispatch();
 
     const handleSubmitForm = () =>{
-        // console.log(email)
-        setErrorMessage(validateData(email.current.value, password.current.value, !isSignInForm&& name.current.value))
-        if(errorMessage) return;
+        const Validation = validateData(email.current.value, password.current.value, !isSignInForm&& name.current.value);
+        setErrorMessage(Validation)
 
+        // if(errorMessage) return;
+        if(Validation || loading) return;
+
+        setLoading(true)
+        // console.log(loading)
         if(!isSignInForm){
             // Signed up 
             createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
@@ -48,6 +53,9 @@ const Login = () => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 setErrorMessage(errorCode + " - " + errorMessage)
+            })
+            .finally(()=>{
+                setLoading(false)
             });
         }
         else{
@@ -60,9 +68,15 @@ const Login = () => {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                setErrorMessage(errorCode + " - " + errorMessage)
+                // setErrorMessage(errorCode + " - " + errorMessage)
+                setErrorMessage(errorMessage)
+            })
+            .finally(()=>{
+                setLoading(false)
             });
         }
+
+        // setLoading(false)
     }
 
 
@@ -72,12 +86,12 @@ const Login = () => {
             {/* <div className='absolute'> */}
             <div className='fixed'>
                 <img
-                className='h-screen object-cover md:w-screen lg:h-auto'
+                className='h-screen object-cover md:w-screen'
                     src={BackGround}
                     alt='backgroundImage'
                 />
             </div>
-            <form className='absolute p-12 my-40 mx-auto right-0 left-0 w-[90%] sm:w-2/3 lg:w-1/3 bg-black text-white rounded-lg bg-opacity-70'
+            <form className='absolute p-8 my-28 mx-auto right-0 left-0 w-[90%] sm:w-2/3 lg:w-1/3 bg-black text-white rounded-lg bg-opacity-70'
                 onSubmit={(e)=>{
                     e.preventDefault()
                     handleSubmitForm();
@@ -108,13 +122,16 @@ const Login = () => {
                     ref={password}
                 />
 
-                <p className='font-bold text-red-800'>{errorMessage}</p>
+                <p className='sm:font-bold text-red-800 absolute sm:pl-4 pr-2 sm:pr-8 max-h-12 overflow-hidden'>{errorMessage}</p>
 
-                <button className='p-4 my-6 bg-red-700 w-full rounded-lg'>{isSignInForm ? "Sign In" : "Sign Up" }</button>
+                <button className={`p-4 mt-16 mb-4 bg-red-700 w-full rounded-lg ${loading ? 'cursor-wait' : 'cursor-pointer' }`}>{isSignInForm ? "Sign In" : "Sign Up" }</button>
 
                 <p className='cursor-pointer'
-                    onClick={()=> setIsSignInForm(!isSignInForm)}
-                >{isSignInForm  ? "New to GptFlix? Sign Ip Now" : "Already registered? Sign In Now " }</p>
+                    onClick={()=> {
+                        setIsSignInForm(!isSignInForm)
+                        setErrorMessage(null)
+                    }}
+                >{isSignInForm  ? "New to GptFlix? Sign Up Now" : "Already registered? Sign In Now " }</p>
             </form>
         </div>
     )

@@ -45,7 +45,7 @@ const Header = () => {
       //success
     }).catch((error) => {
       // An error happened.
-      console.log(error)
+      console.error(error)
     });
   }
 
@@ -86,7 +86,7 @@ const Header = () => {
             onClick={handleSignOut}
           /> */}
           <div className='flex ml-4 gap-2'>
-            <p className='py-2 px-2 sm:px-4 sm:text-lg text-white bg-blue-500 rounded-lg border border-white cursor-none'>{user?.displayName?.length > 10 ? user?.displayName(0,10) : user?.displayName }</p>
+            <p className='py-2 px-2 sm:px-4 sm:text-lg text-white bg-blue-500 rounded-lg border border-white cursor-none'>{user?.displayName?.length > 10 ? user?.displayName.substring(0,10) : user?.displayName }</p>
             <button className='py-2 px-2 sm:px-4 sm:font-bold sm:text-lg text-red-600 bg-blue-500 rounded-lg border border-red-400' onClick={handleSignOut}>Logout</button>
           </div>
         </div>

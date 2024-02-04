@@ -1,7 +1,9 @@
 import React from 'react'
+// import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 const VideoTitle = ({title, overview, movieId, genresIds}) => {
+  // const trailerVideo = useSelector(store => store.movies?.trailerVideo)
   const navigate = useNavigate()
   return (
     <div className='absolute pt-[30%] sm:pt-[20%] pl-[5%] text-white bg-gradient-to-r from-black w-screen aspect-video'>

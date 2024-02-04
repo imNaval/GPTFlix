@@ -22,7 +22,7 @@ const GptSearchBar = () => {
   const handleGptSearch = async() =>{
     if(searchText.current.value === '' || searching) return;
     setSearching(true)
-    console.log(searching)
+    // console.log(searching)
     dispatch(addGptMovieResults({movieNames: "Loading", movieResults: null}))
 
     const searchQuery = "Act as a Movie Recommendation system and suggest some movies for the query " 
