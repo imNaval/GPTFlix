@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {getAuth} from "firebase/auth"
+import {getAuth, connectAuthEmulator} from "firebase/auth"
 import { getFirestore } from "firebase/firestore";
 import { FIREBASE_API_KEY, FIREBASE_APP_ID, FIREBASE_AUTH_DOMAIN, FIREBASE_MEASUREMENT_ID, FIREBASE_MESSAGING_SENDER_ID, FIREBASE_PROJECT_ID, FIREBASE_STORAGE_BUCKET } from "./constant";
 
@@ -24,5 +24,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-export const auth = getAuth();
+export const auth = getAuth(app);
+
+// Configure auth settings for email verification
+auth.useDeviceLanguage();
+
+// Uncomment the line below if you want to use Firebase Auth Emulator for testing
+// if (process.env.NODE_ENV === 'development') {
+//   connectAuthEmulator(auth, 'http://localhost:9099');
+// }
+
 export const db = getFirestore(app);

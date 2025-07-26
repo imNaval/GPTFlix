@@ -24,6 +24,14 @@ const Header = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        // Check if email is verified (only for email/password users, not Google users)
+        if (user.providerData[0]?.providerId === 'password' && !user.emailVerified) {
+          // User is signed in but email is not verified
+          dispatch(removeUser())
+          navigate("/")
+          return;
+        }
+        
         const { uid, email, displayName } = user
         dispatch(addUser({
           uid: uid,

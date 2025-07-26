@@ -5,13 +5,14 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import PlayVideo from './PlayVideo'
 import MovieDetail from './MovieDetail'
 import Error from './Error'
+import AuthForm from './AuthForm'
 
 const Body = () => {
 
     const appRouter = createBrowserRouter([
         {
             path: "/",
-            element: <Login />
+            element: <AuthForm />
         },
         {
             path: "/browse",
