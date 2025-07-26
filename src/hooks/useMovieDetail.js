@@ -1,17 +1,18 @@
 import { useDispatch } from "react-redux"
 import { addMovieDetails } from "../utils/moviesSlice"
 import { useEffect } from "react"
-import { TMDB_API_OPTIONS } from "../utils/constant"
+import { getMovieDetails as getMovieDetailsFromProxy } from "../utils/proxyApi"
 
 const useMovieDetail = ({movieId}) => {
     const dispatch = useDispatch()
 
     const getMovieDetails = async() =>{
-      const url = 'https://api.themoviedb.org/3/movie/'+ movieId +'?language=en-US' //'https://api.themoviedb.org/3/movie/movie_id?language=en-US'
-      const data = await fetch(url, TMDB_API_OPTIONS)
-      const json = await data.json()
-
-      dispatch(addMovieDetails(json))
+      try {
+        const json = await getMovieDetailsFromProxy(movieId)
+        dispatch(addMovieDetails(json))
+      } catch (error) {
+        console.error('Error fetching movie details:', error)
+      }
     }
 
     useEffect(()=>{

@@ -2,17 +2,20 @@
 import { useDispatch } from "react-redux"
 import { addMovieDetails, addMoviesWithGenres } from "../utils/moviesSlice"
 import { useEffect } from "react"
-import { TMDB_API_OPTIONS } from "../utils/constant"
+import { discoverMovies } from "../utils/proxyApi"
 
 const useMoviesWithGenres = ({genres}) => {
     const dispatch = useDispatch()
 
     const getMovies = async(genre) =>{
-      const url = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=true&language=en-US&page=1&sort_by=popularity.desc&&with_genres=` + genre
-      const data = await fetch(url, TMDB_API_OPTIONS)
-      const json = await data.json()
-    //   console.log(json)
-      return json;
+      try {
+        const json = await discoverMovies(genre)
+        //   console.log(json)
+        return json;
+      } catch (error) {
+        console.error('Error fetching movies by genre:', error)
+        return { results: [] }
+      }
     }
 
     function getMoviesByGenre(){

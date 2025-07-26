@@ -1,24 +1,27 @@
 import { useDispatch } from "react-redux"
 import { addRecommendationMovies, addRelatedMovies } from "../utils/moviesSlice";
-import { TMDB_API_OPTIONS } from "../utils/constant";
 import { useEffect } from "react";
+import { getSimilarMovies as getSimilarMoviesFromProxy, getRecommendations as getRecommendationsFromProxy } from "../utils/proxyApi";
 
 const useRelatedMovies = ({movieId}) =>{
     const dispatch = useDispatch();
 
     const getSimilarMovies = async() =>{
-        const url = `https://api.themoviedb.org/3/movie/${movieId}/similar?language=en-US&page=1`
-        const data = await fetch(url, TMDB_API_OPTIONS)
-        const json = await data.json()
-        dispatch(addRelatedMovies(json.results))
+        try {
+            const json = await getSimilarMoviesFromProxy(movieId)
+            dispatch(addRelatedMovies(json.results))
+        } catch (error) {
+            console.error('Error fetching similar movies:', error)
+        }
     }
 
     const getRecommendationMovies = async() =>{
-        const url = `https://api.themoviedb.org/3/movie/${movieId}/recommendations?language=en-US&page=1`
-        const data = await fetch(url, TMDB_API_OPTIONS)
-        const json = await data.json()
-        // console.log(json)
-        dispatch(addRecommendationMovies(json.results))
+        try {
+            const json = await getRecommendationsFromProxy(movieId)
+            dispatch(addRecommendationMovies(json.results))
+        } catch (error) {
+            console.error('Error fetching recommendation movies:', error)
+        }
     }
 
     useEffect(()=>{

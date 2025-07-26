@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import lang from '../utils/languageConstants'
 import { useDispatch, useSelector } from 'react-redux'
 import openai, { fetchGptResponse } from '../utils/openai'
-import { TMDB_API_OPTIONS } from '../utils/constant'
 import { addGptMovieResults } from '../utils/gptSlice'
 import { checkRateLimits, incrementRateLimits } from '../utils/rateLimiter'
 import { auth } from '../utils/firebase'
 import { FaSearch } from 'react-icons/fa'
+import { searchMovies } from '../utils/proxyApi'
 
 const GptSearchBar = ({ onSearchComplete }) => {
   const [searching, setSearching] = useState(false)
@@ -17,11 +17,13 @@ const GptSearchBar = ({ onSearchComplete }) => {
   const user = useSelector(store => store.user)
 
   const TmdbMovieSearch = async(movie) =>{
-    const data = await fetch('https://api.themoviedb.org/3/search/movie?query=' + movie + '&include_adult=false&language=en-US&page=1', TMDB_API_OPTIONS)
-
-    const json = await data.json();
-
-    return json.results;
+    try {
+      const json = await searchMovies(movie)
+      return json.results;
+    } catch (error) {
+      console.error('Error searching movies:', error)
+      return [];
+    }
   }
 
   const handleGptSearch = async() =>{
