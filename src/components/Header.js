@@ -80,7 +80,7 @@ const Header = () => {
           <button className='flex items-center gap-2 border border-white rounded-lg bg-purple-400 text-white text-base px-2 sm:px-3 py-1.5 sm:py-2 sm:mx-2 hover:bg-purple-500 transition-colors duration-200' onClick={handleGptToggle}>
             {showGptSearch ? <><FaHome className="text-sm" /> Home</> : <><FaRobot className="text-sm" /> GPT Search</>}
           </button>
-          {showGptSearch &&
+          {/* {showGptSearch &&
             <div className='relative'>
               <FaGlobe className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm' />
               <select className='pl-4 pr-2 py-2 m-2 bg-gray-900 text-white cursor-pointer rounded-lg border border-gray-700 focus:outline-none focus:border-purple-400 transition-colors duration-200' onChange={(e) => handleLanguageChange(e)}>{
@@ -92,7 +92,7 @@ const Header = () => {
               }
               </select>
             </div>
-          }
+          } */}
           <div className='flex ml-4 gap-3'>
             <div className='flex items-center gap-2 py-2 px-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg border border-blue-400 shadow-lg'>
               <FaUser className="text-sm" />

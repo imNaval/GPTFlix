@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { validateData } from '../utils/validate'
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import {auth} from '../utils/firebase'
 import { useDispatch } from 'react-redux'
-import { addUser } from '../utils/userSlice'
+import { addUser, removeUser } from '../utils/userSlice'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 const Login = ({ onSwitchToSignup, onSwitchToResetPassword, errorMessage, setErrorMessage, loading, setLoading }) => {
@@ -13,6 +13,13 @@ const Login = ({ onSwitchToSignup, onSwitchToResetPassword, errorMessage, setErr
     const password = useRef(null)
 
     const dispatch = useDispatch();
+
+    // Clear user data on component mount if user is not verified
+    useEffect(() => {
+        if (auth.currentUser && !auth.currentUser.emailVerified) {
+            dispatch(removeUser());
+        }
+    }, [dispatch]);
 
     const handleGoogleSignIn = async () => {
         setLoading(true)
@@ -78,7 +85,7 @@ const Login = ({ onSwitchToSignup, onSwitchToResetPassword, errorMessage, setErr
     }
 
     return (
-        <form className='absolute p-8 my-28 mx-auto right-0 left-0 w-[90%] sm:w-2/3 lg:w-1/3 bg-black text-white rounded-lg bg-opacity-70'
+        <form className='absolute p-8 my-28 mx-auto right-0 left-0 w-[90%] sm:w-2/3 lg:w-1/3 bg-primary-bg text-white rounded-lg bg-opacity-70'
             onSubmit={(e)=>{
                 e.preventDefault()
                 handleSubmitForm();

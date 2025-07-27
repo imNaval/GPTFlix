@@ -29,7 +29,7 @@ const ApiUsageDisplay = () => {
     if (!user || !user.uid) return null;
 
     return (
-        <div className="bg-black bg-opacity-80 text-white p-3 rounded-lg border border-gray-600 shadow-lg min-w-[200px]">
+        <div className="bg-primary-bg bg-opacity-80 text-white p-3 rounded-lg border border-gray-600 shadow-lg min-w-[200px]">
             <div className="flex items-center justify-between gap-2 mb-2">
                 <div className="flex items-center">
                     <FaInfoCircle className="text-blue-400" />

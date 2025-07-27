@@ -77,17 +77,8 @@ const AuthForm = () => {
         checkEmailVerification();
     }, [dispatch]);
 
-    // Listen for auth state changes
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user && user.emailVerified) {
-                // User is signed in and email is verified, redirect to browse
-                window.location.href = '/browse';
-            }
-        });
-
-        return () => unsubscribe();
-    }, []);
+    // Listen for auth state changes - removed to prevent premature redirects
+    // The Header component will handle authentication state properly
 
     const switchToLogin = () => {
         setCurrentView('login');

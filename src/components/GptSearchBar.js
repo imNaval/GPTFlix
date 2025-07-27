@@ -181,7 +181,7 @@ Do not include any other text, just the 7 movie names with commas between them.`
 
   return (
     <div className='w-full relative'>
-        <form className='w-full bg-black bg-opacity-80 rounded-lg grid grid-cols-12' onSubmit={(e) => e.preventDefault()}>
+        <form className='w-full bg-primary-bg bg-opacity-80 rounded-lg grid grid-cols-12' onSubmit={(e) => e.preventDefault()}>
             <input
                 className='p-4 m-4 rounded-lg col-span-10'
                 type='text'

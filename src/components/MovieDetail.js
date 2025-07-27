@@ -36,7 +36,7 @@ const MovieDetail = () => {
                 <img className='w-48 mx-auto md:mx-0 cursor-pointer' src={GPTFLIX} alt='netflixLogo' onClick={() => navigate("/")} />
             </div>
 
-            <div className='bg-black bg-opacity-70 w-full !h-screen'>
+            <div className='bg-primary-bg bg-opacity-70 w-full !h-screen'>
                 <div className='w-full h-screen absolute -z-10 flex'>
                     <img className='w-full  object-cover' src={IMG_CDN_URL_ORIGINAL + MovieDetail?.poster_path} alt='' />
                 </div>
@@ -71,7 +71,7 @@ const MovieDetail = () => {
 
             {
             relatedMovies &&
-            <div className='bg-black'>
+            <div className='bg-primary-bg'>
                 <div className='relative z-20'>
                     <MovieList title={"Related"} movies={relatedMovies} />
                 </div>
@@ -80,7 +80,7 @@ const MovieDetail = () => {
 
             {
             genresMovies&&
-            <div className='relative z-20 bg-black'>
+            <div className='relative z-20 bg-primary-bg'>
                 {
                     genresMovies?.map((movies, idx) => <MovieList key={genres[idx]} title={MovieDetail?.genres[idx]?.name} movies={movies[String(genres[idx])]} />)
                 }

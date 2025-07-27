@@ -52,7 +52,7 @@ const ResetPassword = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading
 
     return (
         <>
-            <form className='absolute p-8 my-28 mx-auto right-0 left-0 w-[90%] sm:w-2/3 lg:w-1/3 bg-black text-white rounded-lg bg-opacity-70'
+            <form className='absolute p-8 my-28 mx-auto right-0 left-0 w-[90%] sm:w-2/3 lg:w-1/3 bg-primary-bg text-white rounded-lg bg-opacity-70'
                 onSubmit={(e)=>{
                     e.preventDefault()
                     handlePasswordReset();
@@ -81,7 +81,7 @@ const ResetPassword = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading
 
             {/* Password Reset Modal Overlay */}
             {resetEmailSent && (
-                <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 bg-primary-bg bg-opacity-75 flex items-center justify-center z-50 p-4">
                     <div className="bg-gray-900 rounded-lg p-6 max-w-md w-full border border-gray-700 shadow-2xl">
                         {/* Modal Header */}
                         <div className="flex items-center justify-between mb-4">

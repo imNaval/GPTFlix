@@ -13,7 +13,7 @@ export const GptMovieShimmer = () => {
   const cards = [1, 2, 3, 4, 5, 6, 7, 8];
 
   return (
-    <div className='p-4 m-4 bg-black bg-opacity-80 text-white'>
+    <div className='p-4 m-4 bg-primary-bg bg-opacity-80 text-white'>
       {
         containers.map(container => <div key={container} className='mb-8 overflow-hidden'>
           <div className='w-96 h-10 my-2 bg-gradient-to-r from-gray-500'></div>

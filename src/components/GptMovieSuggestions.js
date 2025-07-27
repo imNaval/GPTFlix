@@ -11,7 +11,7 @@ const GptMovieSuggestions = () => {
   if(gptMovieNames === "Loading") return <GptMovieShimmer />
 
   return (
-    <div className='p-4 mt-4 bg-black bg-opacity-80 text-white'>
+    <div className='p-4 mt-4 bg-primary-bg bg-opacity-80 text-white'>
       <div>
         {
           gptMovieNames.map((movieName, idx) => (

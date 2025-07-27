@@ -29,7 +29,7 @@ const PlayVideo = () => {
     // console.log(movieVideos)
     console.log(videoId)
   return (
-    <div className='bg-black text-white'>
+    <div className='bg-primary-bg text-white'>
       <div className='absolute px-8 py-3 bg-gradient-to-b from-black z-50 w-full flex justify-between flex-col md:flex-row -top-16 md:-top-10'>
         <img className='w-48 mx-auto md:mx-0' src={GPTFLIX} alt='netflixLogo' onClick={() => navigate("/")} />
       </div>
@@ -54,7 +54,7 @@ const PlayVideo = () => {
 
         <div className='mt-12'>
           <h2 className='text-5xl font-bold ml-12'>More Videos</h2>
-          <div className='flex flex-wrap justify-center bg-black bg-opacity-10'>
+          <div className='flex flex-wrap justify-center bg-primary-bg bg-opacity-10'>
           {
             movieVideos?.map(video => <div className='w-72 m-2' key={video?.id} onClick={()=> setVideoId(video?.id)}>
               <img className='w-full' alt="" src={video?.snippet?.thumbnails?.standard?.url} />

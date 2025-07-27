@@ -1,21 +1,30 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { validateData } from '../utils/validate'
 import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import {auth} from '../utils/firebase'
 import { useDispatch } from 'react-redux'
-import { addUser } from '../utils/userSlice'
+import { addUser, removeUser } from '../utils/userSlice'
 import { FaEnvelope, FaCheck, FaSpinner, FaExternalLinkAlt, FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa'
 
 const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLoading }) => {
     const [showPassword, setShowPassword] = useState(false)
     const [showVerificationModal, setShowVerificationModal] = useState(false)
     const [checkingVerification, setCheckingVerification] = useState(false)
+    const [resendLoading, setResendLoading] = useState(false)
+    const [resendSuccess, setResendSuccess] = useState(false)
 
     const email = useRef(null)
     const password = useRef(null)
     const name = useRef(null)
 
     const dispatch = useDispatch();
+
+    // Clear user data on component mount if user is not verified
+    useEffect(() => {
+        if (auth.currentUser && !auth.currentUser.emailVerified) {
+            dispatch(removeUser());
+        }
+    }, [dispatch]);
 
     // Function to open email client
     const openEmailClient = (emailAddress) => {
@@ -37,6 +46,23 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
     // Function to open default mail app
     const openDefaultMail = (emailAddress) => {
         window.open(`mailto:${emailAddress}`, '_blank');
+    };
+
+    // Function to open spam folder
+    const openSpamFolder = (emailAddress) => {
+        const emailProviders = {
+            'gmail.com': 'https://mail.google.com/mail/u/0/#spam',
+            'yahoo.com': 'https://mail.yahoo.com/d/folders/1?.intl=us&.lang=en-US&.partner=none&.src=fp',
+            'outlook.com': 'https://outlook.live.com/mail/0/junkemail',
+            'hotmail.com': 'https://outlook.live.com/mail/0/junkemail',
+            'icloud.com': 'https://www.icloud.com/mail',
+            'aol.com': 'https://mail.aol.com/webmail-std/en-us/suite'
+        };
+
+        const domain = emailAddress.split('@')[1];
+        const spamUrl = emailProviders[domain] || `mailto:${emailAddress}`;
+        
+        window.open(spamUrl, '_blank');
     };
 
     const handleGoogleSignIn = async () => {
@@ -90,6 +116,8 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
                 handleCodeInApp: false
             })
             .then(() => {
+                // Clear any existing user data from Redux since email is not verified yet
+                dispatch(removeUser());
                 setShowVerificationModal(true) // Show modal instead of inline message
                 console.log('Verification email sent successfully to:', user.email);
                 console.log('Verification URL:', window.location.origin + '/');
@@ -103,13 +131,6 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
 
             updateProfile(auth.currentUser, {
                 displayName: name.current.value,
-            }).then(() => {
-                const { uid, email, displayName } = auth.currentUser
-                dispatch(addUser({
-                    uid,
-                    email,
-                    displayName
-                }))
             }).catch((error) => {
                 setErrorMessage(error)
             });
@@ -126,17 +147,28 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
 
     const handleResendVerification = () => {
         if (auth.currentUser) {
+            setResendLoading(true)
+            setResendSuccess(false)
+            setErrorMessage(null)
+            
             sendEmailVerification(auth.currentUser, {
                 url: window.location.origin + '/',
                 handleCodeInApp: false
             })
             .then(() => {
-                setErrorMessage("Verification email sent again!")
+                setResendSuccess(true)
                 console.log('Verification email resent successfully');
+                // Clear success message after 3 seconds
+                setTimeout(() => {
+                    setResendSuccess(false)
+                }, 3000)
             })
             .catch((error) => {
                 console.error('Error resending verification email:', error);
                 setErrorMessage("Failed to send verification email: " + error.message)
+            })
+            .finally(() => {
+                setResendLoading(false)
             });
         } else {
             setErrorMessage("No user found. Please sign up first.");
@@ -175,7 +207,7 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
 
     return (
         <>
-            <form className='absolute p-8 my-28 mx-auto right-0 left-0 w-[90%] sm:w-2/3 lg:w-1/3 bg-black text-white rounded-lg bg-opacity-70'
+            <form className='absolute p-8 my-28 mx-auto right-0 left-0 w-[90%] sm:w-2/3 lg:w-1/3 bg-primary-bg text-white rounded-lg bg-opacity-70'
                 onSubmit={(e)=>{
                     e.preventDefault()
                     handleSubmitForm();
@@ -241,7 +273,7 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
 
             {/* Email Verification Modal Overlay */}
             {showVerificationModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 bg-primary-bg bg-opacity-75 flex items-center justify-center z-50 p-4">
                     <div className="bg-gray-900 rounded-lg p-6 max-w-md w-full border border-gray-700 shadow-2xl">
                         {/* Modal Header */}
                         <div className="flex items-center justify-between mb-4">
@@ -255,7 +287,11 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
                                 </div>
                             </div>
                             <button 
-                                onClick={() => setShowVerificationModal(false)}
+                                onClick={() => {
+                                    setShowVerificationModal(false);
+                                    // Clear user data if they close the modal without verifying
+                                    dispatch(removeUser());
+                                }}
                                 className="text-gray-400 hover:text-white transition-colors"
                             >
                                 <FaTimes className="text-xl" />
@@ -269,10 +305,10 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
                         </div>
 
                         {/* Quick Email Access Buttons */}
-                        <div className="grid grid-cols-2 gap-3 mb-4">
+                        <div className="grid grid-cols-3 gap-2 mb-4">
                             <button 
                                 type="button"
-                                className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                                className="flex items-center justify-center gap-1 px-2 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs"
                                 onClick={() => openEmailClient(email.current?.value || '')}
                             >
                                 <FaExternalLinkAlt className="text-xs" />
@@ -280,11 +316,19 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
                             </button>
                             <button 
                                 type="button"
-                                className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                                className="flex items-center justify-center gap-1 px-2 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-xs"
+                                onClick={() => openSpamFolder(email.current?.value || '')}
+                            >
+                                <FaExternalLinkAlt className="text-xs" />
+                                Check Spam
+                            </button>
+                            <button 
+                                type="button"
+                                className="flex items-center justify-center gap-1 px-2 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs"
                                 onClick={() => openDefaultMail(email.current?.value || '')}
                             >
                                 <FaExternalLinkAlt className="text-xs" />
-                                Open Mail App
+                                Mail App
                             </button>
                         </div>
 
@@ -306,18 +350,33 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
                             
                             <button 
                                 type="button"
-                                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                className={`w-full flex items-center justify-center gap-2 px-4 py-2 text-white rounded-lg transition-colors ${resendLoading ? 'bg-gray-600 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
                                 onClick={handleResendVerification}
+                                disabled={resendLoading}
                             >
-                                <FaEnvelope />
-                                Resend Email
+                                {resendLoading ? (
+                                    <FaSpinner className="animate-spin" />
+                                ) : (
+                                    <FaEnvelope />
+                                )}
+                                {resendLoading ? 'Sending...' : 'Resend Email'}
                             </button>
                         </div>
+
+                        {/* Success Message */}
+                        {resendSuccess && (
+                            <div className="mt-4 p-3 bg-green-900 bg-opacity-30 border border-green-700 rounded-lg">
+                                <div className="flex items-center gap-2">
+                                    <FaCheck className="text-green-400" />
+                                    <p className="text-green-200 text-sm font-medium">Verification email sent successfully!</p>
+                                </div>
+                            </div>
+                        )}
 
                         {/* Help Text */}
                         <div className="mt-4 text-center">
                             <p className="text-gray-400 text-xs">
-                                Didn't receive the email? Check your spam folder or try resending.
+                                Didn't receive the email? Check your <span className='text-orange-800 italic'>spam folder</span> or try resending.
                             </p>
                         </div>
                     </div>
