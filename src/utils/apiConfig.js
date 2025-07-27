@@ -32,5 +32,5 @@ export const getApiOptions = () => {
 };
 
 // Log current configuration
-console.log(`🔧 API Mode: ${API_CONFIG.MODE}`);
-console.log(`🔧 Base URL: ${getBaseUrl()}`); 
+// console.log(`🔧 API Mode: ${API_CONFIG.MODE}`);
+// console.log(`🔧 Base URL: ${getBaseUrl()}`); 

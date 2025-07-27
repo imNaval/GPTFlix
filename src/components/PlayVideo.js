@@ -27,7 +27,7 @@ const PlayVideo = () => {
     }, [movieVideos])
 
     // console.log(movieVideos)
-    console.log(videoId)
+    // console.log(videoId)
   return (
     <div className='bg-primary-bg text-white'>
       <div className='absolute px-8 py-3 bg-gradient-to-b from-black z-50 w-full flex justify-between flex-col md:flex-row -top-16 md:-top-10'>

@@ -110,7 +110,7 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
             }
 
             // Send email verification
-            console.log('Attempting to send verification email to:', user.email);
+            // console.log('Attempting to send verification email to:', user.email);
             sendEmailVerification(user, {
                 url: window.location.origin + '/', // Redirect back to login page
                 handleCodeInApp: false
@@ -119,8 +119,8 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
                 // Clear any existing user data from Redux since email is not verified yet
                 dispatch(removeUser());
                 setShowVerificationModal(true) // Show modal instead of inline message
-                console.log('Verification email sent successfully to:', user.email);
-                console.log('Verification URL:', window.location.origin + '/');
+                // console.log('Verification email sent successfully to:', user.email);
+                // console.log('Verification URL:', window.location.origin + '/');
             })
             .catch((error) => {
                 console.error('Error sending verification email:', error);
@@ -157,7 +157,7 @@ const Signup = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading, setLo
             })
             .then(() => {
                 setResendSuccess(true)
-                console.log('Verification email resent successfully');
+                //  console.log('Verification email resent successfully');
                 // Clear success message after 3 seconds
                 setTimeout(() => {
                     setResendSuccess(false)

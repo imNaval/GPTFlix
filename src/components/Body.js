@@ -5,6 +5,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import PlayVideo from './PlayVideo'
 import MovieDetail from './MovieDetail'
 import Error from './Error'
+import NotFound from './NotFound'
 import AuthForm from './AuthForm'
 
 const Body = () => {
@@ -28,7 +29,7 @@ const Body = () => {
         },
         {
             path: "*",
-            element: <Error />
+            element: <NotFound />
         }
         
     ]);

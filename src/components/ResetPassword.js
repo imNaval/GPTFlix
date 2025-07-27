@@ -24,6 +24,22 @@ const ResetPassword = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading
         window.open(emailUrl, '_blank');
     };
 
+    const openSpamFolder = (emailAddress) => {
+        const emailProviders = {
+            'gmail.com': 'https://mail.google.com/mail/u/0/#spam',
+            'yahoo.com': 'https://mail.yahoo.com/d/folders/1?.intl=us&.lang=en-US&.partner=none&.src=fp',
+            'outlook.com': 'https://outlook.live.com/mail/0/junkemail',
+            'hotmail.com': 'https://outlook.live.com/mail/0/junkemail',
+            'icloud.com': 'https://www.icloud.com/mail',
+            'aol.com': 'https://mail.aol.com/webmail-std/en-us/suite'
+        };
+
+        const domain = emailAddress.split('@')[1];
+        const spamUrl = emailProviders[domain] || `mailto:${emailAddress}`;
+        
+        window.open(spamUrl, '_blank');
+    };
+
     // Function to open default mail app
     const openDefaultMail = (emailAddress) => {
         window.open(`mailto:${emailAddress}`, '_blank');
@@ -132,7 +148,15 @@ const ResetPassword = ({ onSwitchToLogin, errorMessage, setErrorMessage, loading
                                 onClick={() => openDefaultMail(resetEmail)}
                             >
                                 <FaExternalLinkAlt className="text-xs" />
-                                Open Mail App
+                                Open App
+                            </button>
+                            <button 
+                                type="button"
+                                className="flex items-center justify-center gap-1 px-2 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-xs"
+                                onClick={() => openSpamFolder(resetEmail)}
+                            >
+                                <FaExternalLinkAlt className="text-xs" />
+                                Check Spam
                             </button>
                         </div>
 
